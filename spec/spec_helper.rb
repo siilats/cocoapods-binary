@@ -85,34 +85,39 @@ module Pod
       end
     end
 
+
     # mock the dependency of pods, as the dependency may changed along pod version
     # @param [Hash<Symbol, Array<Arrary<String>>>] modification
     def self.stub_pod_dependencies(context, modification)
       raise if modification.nil?
       if !@specification_hooked
         Specification.class_eval do
+          p "chenage!!!!"
           alias_method :original_dependencies, :dependencies
         end
         @specification_hooked = true
       end
 
-      context.allow_any_instance_of(Specification).to context.receive(:dependencies) { |s|
-        deps = modification[s.name.to_sym] || modification[s.name.to_s]
-        if deps
-          if deps == []
-            next []
-          end
-          if deps.first.kind_of? String
-            deps = [deps]
-          end
-          next deps.map{ |name_and_version| Dependency.new(name_and_version[0].to_s, name_and_version[1]) }
-        end
-        if modification[:keep_untouched]
-          next s.original_dependencies
-        else
-          []
-        end
-      }
+      context.instance_eval do
+          allow_any_instance_of(Specification).to receive(:dependencies) { |s|
+            deps = modification[s.name.to_sym] || modification[s.name.to_s]
+            if deps
+              if deps == []
+                next []
+              end
+              if deps.first.kind_of? String
+                deps = [deps]
+              end
+              next deps.map{ |name_and_version| Dependency.new(name_and_version[0].to_s, name_and_version[1]) }
+            end
+            if modification[:keep_untouched]
+              next s.original_dependencies
+            else
+              []
+            end
+          }
+      end
+
     end
 
 
