@@ -5,7 +5,10 @@ require 'cocoapods-binary/gem_version.rb'
 
 Gem::Specification.new do |spec|
   spec.name          = 'cocoapods-binary'
-  spec.version       = CocoapodsBinary::VERSION
+#  spec.version       = CocoapodsBinary::VERSION
+# 0.4.4
+  spec.version       = '0.4.5'
+
   spec.authors       = ['leavez']
   spec.email         = ['gaojiji@gmail.com']
   spec.description   = %q{integrate pods in form of prebuilt frameworks conveniently, reducing compile time}
@@ -19,9 +22,9 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency "cocoapods", ">= 1.5.0", "< 2.0"
-  spec.add_dependency "fourflusher", "~> 2.0"
-  spec.add_dependency "xcpretty", "~> 0.3.0"
+  spec.add_dependency "fourflusher", ">= 2.0"
+  spec.add_dependency "xcpretty", ">= 0.3.0"
 
-  spec.add_development_dependency 'bundler', '~> 1.3'
+  spec.add_development_dependency 'bundler', '>= 1.3'
   spec.add_development_dependency 'rake'
 end
